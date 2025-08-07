@@ -1,0 +1,55 @@
+.dashboard-wrapper {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.dashboard-grid {
+  margin-top: 2rem;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.add-account-card {
+  width: 300px;
+  height: 180px;
+  background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+  border: 2px dashed #4f46e5;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-account-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.add-account-content {
+  text-align: center;
+}
+
+.plus-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: #4f46e5;
+  margin-bottom: 0.5rem;
+}
+
+.add-account-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.add-account-description {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}

@@ -1,0 +1,77 @@
+.hero-wrapper {
+  position: relative;
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #e6f3ff;
+}
+
+.login-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.hero-container {
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-content.centered {
+  max-width: 700px;
+  margin-bottom: 3rem;
+}
+
+.hero-heading {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.hero-description {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: #444;
+}
+
+.hero-buttons button {
+  margin: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 2px solid #4f46e5;
+  color: #4f46e5;
+}
+
+/* Image animation styles */
+.hero-image-wrapper {
+  transform: translateY(40px);
+  opacity: 0;
+  transition: all 1s ease;
+}
+
+.hero-image-wrapper.scrolled {
+  transform: translateY(0);
+  opacity: 1;
+}

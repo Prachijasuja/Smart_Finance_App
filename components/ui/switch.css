@@ -1,0 +1,33 @@
+/* Switch.css */
+
+.switch-root {
+  all: unset;
+  width: 42px;
+  height: 25px;
+  background-color: #ccc;
+  border-radius: 9999px;
+  position: relative;
+  transition: background-color 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.switch-root[data-state="checked"] {
+  background-color: #4f46e5; /* Indigo-600 */
+}
+
+.switch-thumb {
+  display: block;
+  width: 21px;
+  height: 21px;
+  background-color: white;
+  border-radius: 9999px;
+  transition: transform 0.2s ease-in-out;
+  transform: translateX(2px);
+  position: absolute;
+  top: 2px;
+  left: 2px;
+}
+
+.switch-root[data-state="checked"] .switch-thumb {
+  transform: translateX(19px);
+}

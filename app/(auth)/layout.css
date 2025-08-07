@@ -1,0 +1,26 @@
+
+.layout-wrapper {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.layout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.layout-title {
+  font-size: 3.75rem; /* similar to text-6xl */
+  font-weight: bold;
+  letter-spacing: -0.02em; /* similar to tracking-tight */
+  background: linear-gradient(to right, #9333ea, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.loader {
+  margin-top: 1rem;
+  width: 100%;
+}
