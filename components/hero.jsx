@@ -1,73 +1,68 @@
 "use client";
 import Link from "next/link";
+import { Button } from "./ui/button";
 import Image from "next/image";
 import { useRef, useEffect } from "react";
-import "./herosection.css";
-
 const HeroSection = () => {
-  const imageRef = useRef();
-
-  useEffect(() => {
-    const imageElement = imageRef.current;
-
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      const scrollThreshold = 100;
-      if (scrollPosition > scrollThreshold) {
-        imageElement.classList.add("scrolled");
-      } else {
-        imageElement.classList.remove("scrolled");
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+   const imageRef=useRef();
+     useEffect(() => {
+            const imageElement = imageRef.current;
+            const handleScroll = () => {
+                const scrollPosition = window.scrollY;
+                const scrollThreshold = 100;
+                if (imageElement) {
+                    if (scrollPosition > scrollThreshold) {
+                        imageElement.classList.add("scrolled");
+                    } else {
+                        imageElement.classList.remove("scrolled");
+                    }
+                }
+            };
+            window.addEventListener("scroll", handleScroll);
+            return () => window.removeEventListener("scroll", handleScroll);
+     }, []);
 
   return (
-    <div className="hero-wrapper">
-      {/* Top-right login button */}
-      <div className="login-button">
-        <Link href="/sign-in">
-          <button className="btn btn-outline">Login</button>
-        </Link>
-      </div>
+    <div className="pb-20 px-4">
+        <div className="container mx-auto text-center">
+            <h1 className="text-5xl md:text-8xl lg:text-[105px] pb-6 font-extrabold tracking-tighter pr-2 pb-2 text-transparent bg-clip-text bg-gradient-to-br from-blue-600 to-purple-600">
+                Manage your finances<br /> with Intelligence
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+                
+                AN AI-powered personal finance manager that helps you track your expenses, 
+                budget effectively, and achieve your financial goals with ease.
+            </p>
+            <div className="flex justify-center space-x-4">
+                <Link href="/dashboard">
+                
+                <Button size="lg" className="px-8">
+                    Get Started
 
-      <div className="hero-container">
-        <div className="hero-content">
-          <h1 className="hero-heading">
-            Manage Your Finances
-            <br />
-            With Intelligence
-          </h1>
-          <p className="hero-description">
-            An AI-powered financial management platform that helps you track,
-            analyse, and optimize your spending with real-time insights.
-          </p>
+                </Button>
+                </Link>
+                <Link href="/dashboard">
+                
+                <Button size="lg" variant="outline" className="px-8">
+                    Watch Demo
 
-          <div className="hero-buttons">
-            <Link href="/dashboard">
-              <button className="btn btn-primary">Get Started</button>
-            </Link>
-            <Link href="https://www.youtube.com/roadsidecoder">
-              <button className="btn btn-outline">Watch Demo</button>
-            </Link>
-          </div>
+                </Button>
+                </Link>
+            </div>
+            <div className="hero-image-wrapper">
+                <div ref={imageRef} className="hero-image">
+                    <Image src="/banner.jpeg" 
+                        width={1280} 
+                        height={720}
+                        alt="Dashboard Preview"
+                        className="rounded-lg shadow-2xl border mx-auto"
+                        priority
+                    />
+                </div>
+            </div>
+                </div>
         </div>
+    );
+}
 
-        <div ref={imageRef} className="hero-image-wrapper">
-          <Image
-            src="/banner.jpeg"
-            width={1280}
-            height={720}
-            alt="Dashboard Preview"
-            className="hero-img"
-            priority
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default HeroSection;
+export default HeroSection

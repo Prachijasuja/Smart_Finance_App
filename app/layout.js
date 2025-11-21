@@ -1,40 +1,27 @@
+"use client"; // ← important
 
-import "./globals.css";
 import { Inter } from "next/font/google";
-import Header from "@/components/header";
+import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import {Toaster} from 'sonner';
-const inter=Inter({subsets:["latin"]})
+import Header from "../components/header";
+import Toaster from "../components/ui/sonner";
 
-export const metadata = {
-  title: "Welt",
-  description: "One stop Finance Platform",
-};
+const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
     <html lang="en">
-      <body
-        className={`${inter.className}`}
-      >
-        
+      <body className={inter.className}>
+        <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+  <Header />
+  <main className="min-h-screen">{children}</main>
+  <Toaster richColors />
+  <footer className="bg-blue-50 py-12 text-center text-gray-600">
+    Made with ❤️ by Prachi
+  </footer>
+</ClerkProvider>
 
-        {/*header*/}
-        <Header />
-        <main className="min-h-screen">
-          {children}
-        </main>
-        <Toaster richColors />
-        {/*footer */}
-        <footer className="bg-blue-50 py-12">
-          <div className="container mx-auto px-4 text-center text-gray-600">
-            <p>Made with love by Prachi</p>
-          </div>
-          </footer>
-        
       </body>
     </html>
-    </ClerkProvider>
   );
 }

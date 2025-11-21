@@ -1,118 +1,124 @@
-import HeroSection from "@/components/hero";
-import "./section.css";
-import Image from 'next/image';
+"use client";
+
+import HeroSection from "../components/Hero";
+import { Card, CardContent, CardDescription } from "../components/ui/card";
+import { Button } from "../components/ui/button";
+import { featuresData, howItWorksData, testimonialsData } from "../data/landing";
+import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { featuresData } from "@/data/featuredata";
 
-import {
-
-  statsData,
-  howItWorksData,
-  testimonialsData,
-} from "@/data/landing";
+const statsData = [
+  { value: '10K+', label: 'Active Users' },
+  { value: '$5M+', label: 'Transactions' },
+  { value: '99.9%', label: 'Uptime' },
+  { value: '24/7', label: 'Support' },
+];
 
 export default function Home() {
   return (
-    <div style={{ marginTop: "100px" }}>
+    <div className="mt-40">
       <HeroSection />
-
-      {/* Stats Section */}
-      <section className="stats-section">
-        <div className="stats-container">
-          <div className="stats-grid">
-            {statsData.map((statsData, index) => (
-              <div key={index} className="stats-card">
-                <div className="stats-value">{statsData.value}</div>
-                <div className="stats-label">{statsData.label}</div>
+      <section className="py-20 bg-blue-50">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {statsData.map((stats, index) => (
+              <div key={index} className="text-center">
+                <div className="text-4xl font-bold text-blue-600 mb-2">{stats.value}</div>
+                <div className="text-gray-600">{stats.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
-       <section className="features-section py-10">
-      <div className="features-container max-w-6xl mx-auto px-4">
-        <h2 className="features-title text-3xl font-bold text-center mb-10">
-          Everything you need to manage your finances
-        </h2>
-        <div className="features-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {featuresData.map((feature, index) => {
-            const Icon = feature.icon; // extract the icon component
-            return (
-              <Card key={index} className="feature-card">
-                <CardContent className="p-6 text-center">
-                  <div className="mb-4">
-                    {Icon && <Icon className="mx-auto text-indigo-600" size={40} />}
-                  </div>
-                  <h3 className="feature-title text-xl font-semibold mb-2">
-                    {feature.title}
-                  </h3>
-                  <p className="feature-description text-gray-600">
-                    {feature.description}
-                  </p>
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">Everything you need to manage your finances</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+            {featuresData.map((feature, index) => (
+              <Card key={index}>
+                <CardContent className="space-y-4 pt-4" >
+                  <div className="text-4xl mb-4">{feature.icon}</div>
+                  <h3 className="font-bold text-xl mb-2">{feature.title}</h3>
+                  <p className="text-gray-600">{feature.description}</p>
                 </CardContent>
               </Card>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-
-  <section className="features-section bg">
-  <div className="features-container">
-    <h2 className="features-title">How it works</h2>
-    <div className="features-grid">
-      {howItWorksData?.map((feature, index) => (
-        <div key={index} className="feature-step">
-          <div className="feature-icon">{feature.icon}</div>
-          <h3 className="feature-title">{feature.title}</h3>
-          <p className="feature-description">{feature.description}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
- <section className="user-testimonials">
-  <div className="testimonials-container">
-    <h2 className="testimonials-title">What Our Users Say</h2>
-
-    <div className="testimonials-grid">
-      {testimonialsData.map((user, index) => (
-        <div key={index} className="testimonial-card">
-          <div className="testimonial-content">
-            <img
-              src={user.image}
-              alt={user.name}
-              className="testimonial-avatar"
-            />
-            <h3 className="testimonial-name">{user.name}</h3>
-            <p className="testimonial-role">{user.role}</p>
-            <p className="testimonial-quote">{user.quote}</p>
+            ))}
           </div>
         </div>
-      ))}
-    </div>
-</div>
-</section>
-<section className="cta-section">
-  <div className="cta-container">
-    <h2 className="cta-heading">
-      Ready to take control of your finances?
-    </h2>
-    <p className="cta-subtext">
-      Join thousands of users who are already managing their 
-      finances smarter with Wealth.
-    </p>
-    <a href="/dashboard">
-      <button className="cta-button">
-        Start Free Trial
-      </button>
-    </a>
-  </div>
-</section>
+      </section>
+      <section className="py-20 bg-blue-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">How it works</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+            {howItWorksData.map((feature, index) => (
+               <div key={index}>
+                 <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">{feature.icon}
+                  </div>
+                  <h3 className="text-xl font-semibold mb-4">
+                    {feature.title}
+                  </h3>
+                  <p>{feature.description}</p>
 
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">What users Say</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
+            {testimonialsData.map((testimonial, index) => (
+              <Card key={index} className="p-6">
+                
+                <CardContent className="pt-4" >
+                  <div className="flex items-center mb-4">
+                    <Image
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      width={40}
+                      height={40}
+                      className="rounded-full"/>
+                  </div>
+                  <div className="ml-4">
+                    <div className="font-semibold">
+                      {testimonial.name}
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      {testimonial.role}
+                    </div>
 
+                  </div>
+                  <p className="text-gray-600">{testimonial.quote}</p>
+                  
+                  
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="py-20 bg-blue-600">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold text-white mb-4">Ready to take control of your Finances</h2>
+          <p className="text-blue-100 mb-8 max-w-2xl mx-auto">
+            Join thousands of users who trust Welth to manage their finances effectively 
+            and achieve their 
+            financial goals with ease.
+          </p>
+          <Link href="/dashboard">
+          <Button size="lg" className="px-8 bg-white text-blue-600 hover:bg-blue-animate-bounce">
+            Start Free trial
+          </Button>
+          </Link>
+            
+          
+        </div>
+      </section>
     </div>
   );
 }
+
+
+
+

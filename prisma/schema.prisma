@@ -6,17 +6,15 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../lib/generated/prisma"
+ 
 }
 
 
-  datasource db {
-  provider   = "postgresql"
-  url        = env("DATABASE_URL")
-  directUrl  = env("DIRECT_URL")
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  
 }
-
-
 model User {
   id            String    @id @default(uuid())
   clerkUserId   String    @unique // clerk user id
@@ -86,28 +84,15 @@ model Budget {
   @@index([userId])
   @@map("budgets")
 }
-enum AccountType {
-  SAVINGS
-  CHECKING
-  CREDIT
-  INVESTMENT
-  OTHER
-  CURRENT  
-}
-
 
 enum TransactionType {
   INCOME
   EXPENSE
-  TRANSFER
-  REFUND
 }
 
-enum RecurringInterval {
-  DAILY
-  WEEKLY
-  MONTHLY
-  YEARLY
+enum AccountType {
+  CURRENT
+  SAVINGS
 }
 
 enum TransactionStatus {
@@ -116,3 +101,9 @@ enum TransactionStatus {
   FAILED
 }
 
+enum RecurringInterval {
+  DAILY
+  WEEKLY
+  MONTHLY
+  YEARLY
+}

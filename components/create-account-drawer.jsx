@@ -1,139 +1,128 @@
-"use client";
-import React, { useState } from "react";
-import "./CreateAccountDrawer.css";
-import { createAccount } from "@/actions/dashboard";
-import { accountSchema } from "@/app/lib/schema";
+"use client"; // ✅ Must be first line
+
+import React, { useState, useEffect } from "react";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+  DrawerClose,
+} from "./ui/drawer";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "./ui/input";
+import { accountsSchema } from "../app/lib/schema";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { Switch } from "./ui/switch";
+import { Button } from "./ui/button";
+import { Loader2 } from "lucide-react";
+import useFetch from "../hooks/use-fetch"; // ✅ default import
+import { toast } from "react-hot-toast";
+import { createAccount } from "../actions/dashboard"; // adjust path if needed
 
 const CreateAccountDrawer = ({ children }) => {
   const [open, setOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    type: "",
-    balance: "",
-    isDefault: false,
+
+  const { register, handleSubmit, formState: { errors }, setValue, watch, reset } = useForm({
+    resolver: zodResolver(accountsSchema),
+    defaultValues: {
+      name: "",
+      type: "CURRENT",
+      balance: "",
+      isDefault: false,
+    },
   });
 
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  // ✅ useFetch hook
+  const { data: newAccount, error, fn: createAccountFn, loading: createAccountLoading } = useFetch(createAccount);
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Clear previous messages
-    setError(null);
-    setSuccess(null);
-
+  const onSubmit = async (data) => {
     try {
-      // ✅ Validate using Zod schema
-      const validatedData = accountSchema.parse(formData);
-
-      // ✅ Call backend/server action
-      const result = await createAccount(validatedData);
-
-      if (result?.success) {
-        setSuccess("Account created successfully!");
-        setOpen(false);
-        setFormData({
-          name: "",
-          type: "",
-          balance: "",
-          isDefault: false,
-        });
-      } else {
-        setError(result?.message || "Failed to create account.");
-      }
+      await createAccountFn(data);
     } catch (err) {
-      // Catch validation or server error
-      console.error(err);
-      setError(err.message || "Validation failed.");
+      toast.error(err.message || "Failed to create account");
     }
   };
 
+  useEffect(() => {
+    if (newAccount) {
+      toast.success("Account created successfully");
+      reset();
+      setOpen(false);
+    }
+  }, [newAccount, reset]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message || "Failed to create account");
+    }
+  }, [error]);
+
   return (
-    <>
-      <button className="drawer-button" onClick={() => setOpen(true)}>
-        {children}
-      </button>
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>{children}</DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>Create New Account</DrawerTitle>
+        </DrawerHeader>
 
-      {open && (
-        <div className="drawer-overlay" onClick={() => setOpen(false)}>
-          <div className="drawer-content" onClick={(e) => e.stopPropagation()}>
-            <div className="drawer-header">
-              <h2 className="drawer-title">Create New Account</h2>
-              <button className="drawer-close" onClick={() => setOpen(false)}>
-                ×
-              </button>
-            </div>
-
-            <form className="drawer-form" onSubmit={handleSubmit}>
-              <label>
-                Account Name
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-
-              <label>
-                Account Type
-                <select
-                  name="type"
-                  value={formData.type}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Select type</option>
-                  <option value="CURRENT">Current</option>
-                  <option value="SAVINGS">Savings</option>
-                </select>
-              </label>
-
-              <label>
-                Initial Balance
-                <input
-                  type="number"
-                  name="balance"
-                  value={formData.balance}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-
-              <label className="checkbox-container">
-                <input
-                  type="checkbox"
-                  name="isDefault"
-                  checked={formData.isDefault}
-                  onChange={handleChange}
-                />
-                Set as Default
-              </label>
-
-              {error && <p className="error-msg">{error}</p>}
-              {success && <p className="success-msg">{success}</p>}
-
-              <div className="drawer-actions">
-                <button type="button" onClick={() => setOpen(false)}>
-                  Cancel
-                </button>
-                <button type="submit">Create Account</button>
-              </div>
-            </form>
+        <form onSubmit={handleSubmit(onSubmit)} className="px-4 pb-4 space-y-4">
+          {/* Account Name */}
+          <div className="space-y-2">
+            <label htmlFor="name" className="text-sm font-medium">Account Name</label>
+            <Input id="name" placeholder="e.g., Main Checking" {...register("name")} />
+            {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
           </div>
-        </div>
-      )}
-    </>
+
+          {/* Account Type */}
+          <div className="space-y-2">
+            <label htmlFor="type" className="text-sm font-medium">Account Type</label>
+            <Select value={watch("type")} onValueChange={(value) => setValue("type", value)}>
+              <SelectTrigger id="type">
+                <SelectValue placeholder="Select type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="CURRENT">Current</SelectItem>
+                <SelectItem value="SAVINGS">Savings</SelectItem>
+              </SelectContent>
+            </Select>
+            {errors.type && <p className="text-sm text-red-500">{errors.type.message}</p>}
+          </div>
+
+          {/* Initial Balance */}
+          <div className="space-y-2">
+            <label htmlFor="balance" className="text-sm font-medium">Initial Balance</label>
+            <Input id="balance" type="number" step="0.01" placeholder="0.00" {...register("balance")} />
+            {errors.balance && <p className="text-sm text-red-500">{errors.balance.message}</p>}
+          </div>
+
+          {/* Default Switch */}
+          <div className="flex items-center justify-between rounded-lg border p-3">
+            <div className="space-y-0.5">
+              <label htmlFor="isDefault" className="text-base font-medium cursor-pointer">Set as Default</label>
+              <p className="text-sm text-muted-foreground">This account will be selected by default for transactions</p>
+            </div>
+            <Switch id="isDefault" checked={watch("isDefault")} onCheckedChange={(checked) => setValue("isDefault", checked)} />
+          </div>
+
+          {/* Buttons */}
+          <div className="flex gap-4 pt-4">
+            <DrawerClose asChild>
+              <Button type="button" variant="outline" className="flex-1">Cancel</Button>
+            </DrawerClose>
+            <Button type="submit" className="flex-1" disabled={createAccountLoading}>
+              {createAccountLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Creating...
+                </>
+              ) : "Create Account"}
+            </Button>
+          </div>
+        </form>
+      </DrawerContent>
+    </Drawer>
   );
 };
 
